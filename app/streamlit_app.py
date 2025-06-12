@@ -68,7 +68,10 @@ def recommend_top_k_configs(context_dict, model, encoder, k=3):
     model_input = pd.concat([df.drop(columns=cat_cols), encoded_df], axis=1)
     df['Predicted_Delivery_Time'] = model.predict(model_input)
 
-    return df.sort_values("Predicted_Delivery_Time").head(3)
+    print(df.columns)  # or use st.write(df.columns)
+    st.write(df.head())  # to debug the contents of df
+
+    return df.sort_values("Predicted_Delivery_Time").head(k)
 
 # --- Button Trigger ---
 # Lets users select context variables via dropdowns/sliders,
