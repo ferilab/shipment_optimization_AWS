@@ -72,7 +72,7 @@ def recommend_top_k_configs(context_dict, model, encoder, opt_num=3):
     st.write(type(df.sort_values("Predicted_Delivery_Time").head()))
     st.write(df.head())  # to debug the contents of df
 
-    return df.sort_values("Predicted_Delivery_Time").head(opt_num)
+    return df.sort_values("Predicted_Delivery_Time") #.head(opt_num)
 
 # --- Button Trigger ---
 # Lets users select context variables via dropdowns/sliders,
@@ -88,7 +88,7 @@ if st.button("🔍 Optimize"):
         "Distance_km": distance_km
     }
 
-# Returns the top 3 optimized configurations based on predicted delivery time.
+# Returns the top optimized configurations based on predicted delivery time.
     result_df = recommend_top_k_configs(context, model, encoder, opt_num)
     st.success("Top delivery configurations:")
     st.dataframe(result_df[["Vehicle", "Agent_Age", "Agent_Rating", "Predicted_Delivery_Time"]])
