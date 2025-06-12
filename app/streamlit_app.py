@@ -37,7 +37,7 @@ model, encoder = load_model_and_encoder()
 st.title("🚚 Shipment Optimization Tool")
 st.markdown("Define the **delivery context** below to get the best delivery configurations.")
 
-k = st.selectbox("How many top options would you like to see?", options=[1, 2, 3, 4, 5], index=2)
+opt_num = st.selectbox("How many top options would you like to see?", options=[1, 2, 3, 4, 5], index=2)
 
 weather = st.selectbox("Weather", ["Sunny", "Cloudy", "Windy", "Stormy", "Fog"])
 traffic = st.selectbox("Traffic", ["Low", "Medium", "High"])
@@ -49,8 +49,8 @@ pickup_delay = st.slider("Pickup Delay (minutes)", 0, 120, 20)
 distance_km = st.slider("Distance (km)", 0.0, 50.0, 5.0)
 
 # --- Optimization ---
-def recommend_top_k_configs(context_dict, model, encoder, k=3):
-    k = int(k)  # Ensure k is an integer
+def recommend_top_k_configs(context_dict, model, encoder, opt_num=3):
+    opt_num= int(opt_num)  # Ensure opt_num is an integer
     vehicles = ['Bike', 'Car', 'Scooter']
     agent_ages = list(range(20, 60, 5))
     agent_ratings = [2.5, 3.0, 3.5, 4.0, 4.5, 5.0]
@@ -69,9 +69,10 @@ def recommend_top_k_configs(context_dict, model, encoder, k=3):
     df['Predicted_Delivery_Time'] = model.predict(model_input)
 
     print(df.columns)  # or use st.write(df.columns)
+    st.write(type(df.sort_values("Predicted_Delivery_Time").head()))
     st.write(df.head())  # to debug the contents of df
 
-    return df.sort_values("Predicted_Delivery_Time").head(k)
+    return df.sort_values("Predicted_Delivery_Time").head(opt_num)
 
 # --- Button Trigger ---
 # Lets users select context variables via dropdowns/sliders,
@@ -88,7 +89,7 @@ if st.button("🔍 Optimize"):
     }
 
 # Returns the top 3 optimized configurations based on predicted delivery time.
-    result_df = recommend_top_k_configs(context, model, encoder, k)
-    st.success("Top 3 delivery configurations:")
+    result_df = recommend_top_k_configs(context, model, encoder, opt_num)
+    st.success("Top delivery configurations:")
     st.dataframe(result_df[["Vehicle", "Agent_Age", "Agent_Rating", "Predicted_Delivery_Time"]])
 
