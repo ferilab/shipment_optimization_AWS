@@ -28,5 +28,4 @@ shipment_optimization_AWS/
 │       └── train_on_push.yml    # GitHub Actions workflow
 │
 ├── requirements.txt
-├── lambda_function.py          # Entry point for AWS Lambda (optional)
 └── README.md

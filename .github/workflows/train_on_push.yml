@@ -1,12 +1,12 @@
-name: Train Model on Push
 
 # This assumes train_model.py pulls data from S3 and trains locally within the GitHub runner
 # (cheap and Lambda-free).
 
+name: Train Model on Push
+
 on:
   push:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   train:
@@ -16,16 +16,23 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.10"
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt
+    - name: Install dependencies
+      run: pip install -r requirements.txt
 
-      - name: Run Training Script
-        run: python src/train_model.py
+    - name: Train Model
+      run: |
+        python -c "
+from src.prepare_data import load_and_prepare_data
+from src.train_model import train_delivery_model
+
+df, X_cols, y_col, _ = load_and_prepare_data('amazon_delivery.csv')
+train_delivery_model(df[X_cols], df[y_col])
+        "
