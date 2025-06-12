@@ -17,7 +17,11 @@ ENCODER_KEY = "models/encoder.pkl"
 # --- Load model and encoder from S3 ---
 @st.cache_resource
 def load_model_and_encoder():
-    s3 = boto3.client('s3')
+    s3 = boto3.client(
+    's3',
+    aws_access_key_id=st.secrets["AWS_ACCESS_KEY_ID"],
+    aws_secret_access_key=st.secrets["AWS_SECRET_ACCESS_KEY"]
+)
     
     model_obj = s3.get_object(Bucket=BUCKET, Key=MODEL_KEY)
     model = joblib.load(io.BytesIO(model_obj['Body'].read()))
