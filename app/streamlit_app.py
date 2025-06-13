@@ -38,6 +38,7 @@ st.title("🚚 Shipment Optimization Tool")
 st.markdown("Define the **delivery context** below to get the best delivery configurations.")
 
 opt_num = st.selectbox("How many top options would you like to see?", options=[1, 2, 3, 4, 5], index=2)
+opt_num= int(opt_num)  # Ensure opt_num is an integer
 
 weather = st.selectbox("Weather", ["Sunny", "Cloudy", "Windy", "Stormy", "Fog"])
 traffic = st.selectbox("Traffic", ["Low", "Medium", "High"])
@@ -69,9 +70,9 @@ def recommend_top_k_configs(context_dict, model, encoder, opt_num=3):
     df['Predicted_Delivery_Time'] = model.predict(model_input)
 
     st.write(df.columns)
-    st.write(df.sort_values("Predicted_Delivery_Time").head(3))  # to debug the contents of df
+    #st.write(df.sort_values("Predicted_Delivery_Time").head(3))  # to debug the contents of df
 
-    return df #.sort_values("Predicted_Delivery_Time") #.head(opt_num)
+    return df.sort_values("Predicted_Delivery_Time").head(opt_num)
 
 # --- Button Trigger ---
 # Lets users select context variables via dropdowns/sliders,
@@ -89,6 +90,6 @@ if st.button("🔍 Optimize"):
 
 # Returns the top optimized configurations based on predicted delivery time.
     result_df = recommend_top_k_configs(context, model, encoder, opt_num)
-    st.success("Top delivery configurations new2.5:")
+    st.success("Top delivery configurations new3:")
     st.dataframe(result_df[["Vehicle", "Agent_Age", "Agent_Rating", "Predicted_Delivery_Time"]])
 
