@@ -1,9 +1,7 @@
-
 # This assumes train_model.py pulls data from S3 and trains locally within the GitHub runner
 # (cheap and Lambda-free).
 
 name: Train Model on Push
-
 
 on:
   push:
@@ -17,26 +15,26 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     steps:
-    - name: Set PYTHONPATH
-      run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)" >> $GITHUB_ENV
+      - name: Set PYTHONPATH
+        run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)" >> $GITHUB_ENV
 
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
 
-    - name: Install dependencies
-      run: pip install -r requirements.txt
+      - name: Install dependencies
+        run: pip install -r requirements.txt
 
-    - name: Train Model
-      run: |
-        python -c "
-from src.prepare_data import load_and_prepare_data
-from src.train_model import train_delivery_model
+      - name: Train Model
+        run: |
+          python -c "
+          from src.prepare_data import load_and_prepare_data
+          from src.train_model import train_delivery_model
 
-df, X_cols, y_col, _ = load_and_prepare_data('amazon_delivery.csv')
-train_delivery_model(df[X_cols], df[y_col])
-        "
+          df, X_cols, y_col, _ = load_and_prepare_data('amazon_delivery.csv')
+          train_delivery_model(df[X_cols], df[y_col])
+                  "
