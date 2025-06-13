@@ -69,7 +69,6 @@ def recommend_top_k_configs(context_dict, model, encoder, opt_num=3):
     df['Predicted_Delivery_Time'] = model.predict(model_input)
 
     st.write(df.columns)
-    st.write(type(df)
     st.write(df.head(3))  # to debug the contents of df
 
     return df #.sort_values("Predicted_Delivery_Time") #.head(opt_num)
