@@ -88,6 +88,6 @@ if st.button("🔍 Optimize"):
 
 # Returns the top optimized configurations based on predicted delivery time.
     result_df = recommend_top_k_configs(context, model, encoder, opt_num)
-    st.success("Top delivery configurations new2.9:")
+    st.success("Top delivery configurations new2.85:")
     st.dataframe(result_df[["Vehicle", "Agent_Age", "Agent_Rating", "Predicted_Delivery_Time"]])
 
