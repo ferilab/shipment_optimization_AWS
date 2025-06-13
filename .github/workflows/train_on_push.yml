@@ -4,6 +4,7 @@
 
 name: Train Model on Push
 
+
 on:
   push:
     branches: [main]
@@ -16,6 +17,9 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     steps:
+    - name: Set PYTHONPATH
+      run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)" >> $GITHUB_ENV
+
     - name: Checkout code
       uses: actions/checkout@v3
 
