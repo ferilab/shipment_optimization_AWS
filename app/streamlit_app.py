@@ -68,8 +68,8 @@ def recommend_top_k_configs(context_dict, model, encoder, opt_num=3):
     model_input = pd.concat([df.drop(columns=cat_cols), encoded_df], axis=1)
     df['Predicted_Delivery_Time'] = model.predict(model_input)
 
-    print(df.columns)  # or use st.write(df.columns)
-    st.write(type(df.sort_values("Predicted_Delivery_Time").head()))
+    st.write(df.columns)
+    st.write(type(df)
     st.write(df.head(3))  # to debug the contents of df
 
     return df #.sort_values("Predicted_Delivery_Time") #.head(opt_num)
@@ -90,6 +90,6 @@ if st.button("🔍 Optimize"):
 
 # Returns the top optimized configurations based on predicted delivery time.
     result_df = recommend_top_k_configs(context, model, encoder, opt_num)
-    st.success("Top delivery configurations new:")
+    st.success("Top delivery configurations new2:")
     st.dataframe(result_df[["Vehicle", "Agent_Age", "Agent_Rating", "Predicted_Delivery_Time"]])
 
