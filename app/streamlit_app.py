@@ -35,6 +35,7 @@ model, encoder = load_model_and_encoder()
 
 # --- UI Elements ---
 st.title("🚚 Shipment Optimization Tool")
+st.markdown("The tool is trained using Amazon delivery data and suggest the required number of optimum delivery configurations.")
 st.markdown("Define the **delivery context** below to get the best delivery configurations.")
 
 opt_num = st.selectbox("How many top options would you like to see?", options=[1, 2, 3, 4, 5], index=2)
@@ -88,6 +89,6 @@ if st.button("🔍 Optimize"):
 
 # Returns the top optimized configurations based on predicted delivery time.
     result_df = recommend_top_k_configs(context, model, encoder, opt_num)
-    st.success("Top delivery configurations new3:")
+    st.success("Top delivery configurations new4:")
     st.dataframe(result_df[["Vehicle", "Agent_Age", "Agent_Rating", "Predicted_Delivery_Time"]])
 
