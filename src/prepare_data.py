@@ -45,6 +45,7 @@ def load_and_prepare_data(s3_key, bucket="shipment-optimization-bucket"):
     target_col = 'Delivery_Time'
 
     encoder = OneHotEncoder(handle_unknown='ignore', sparse_output=False)
+
     encoded = encoder.fit_transform(df[categorical_cols])
     encoded_df = pd.DataFrame(encoded, columns=encoder.get_feature_names_out(categorical_cols), index=df.index)
 

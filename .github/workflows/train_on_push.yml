@@ -15,11 +15,11 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     steps:
-      - name: Set PYTHONPATH
-        run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)" >> $GITHUB_ENV
-
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Set PYTHONPATH
+        run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)" >> $GITHUB_ENV
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -29,12 +29,13 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Train Model
+      - name: Train and Upload Model
         run: |
           python -c "
           from src.prepare_data import load_and_prepare_data
-          from src.train_model import train_delivery_model
+          from src.train_model import train_delivery_model, upload_to_s3
 
-          df, X_cols, y_col, _ = load_and_prepare_data('amazon_delivery.csv')
-          train_delivery_model(df[X_cols], df[y_col])
-                  "
+          df, X_cols, y_col, encoder = load_and_prepare_data('amazon_delivery.csv')
+          model = train_delivery_model(df[X_cols], df[y_col])
+          upload_to_s3('models/delivery_time_model.pkl', encoder)
+          "
